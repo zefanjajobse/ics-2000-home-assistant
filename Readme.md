@@ -10,4 +10,4 @@ light:
   - platform: ics_2000
     username: !secret ics_username
     password: !secret ics_password
-    ```
+```
