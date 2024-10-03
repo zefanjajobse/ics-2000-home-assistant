@@ -1,4 +1,4 @@
-# KlikAanKlikUit ICS-2000 support
+# Home Assistant KlikAanKlikUit ICS-2000 support
 This adds the dimmable lights and switches from the ICS-2000 from KlikAanKlikUit to home assistant.
 
 # Installation
