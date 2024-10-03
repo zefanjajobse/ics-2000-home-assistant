@@ -1,0 +1,12 @@
+{
+  "domain": "ics_2000",
+  "name": "KlikAanKlikUit ICS-2000",
+  "codeowners": [],
+  "dependencies": [],
+  "documentation": "https://github.com/home-assistant/example-custom-config/tree/master/custom_components/example_light/",
+  "iot_class": "local_polling",
+  "requirements": [
+    "ics-2000-python==0.1.0"
+  ],
+  "version": "0.1.0"
+}

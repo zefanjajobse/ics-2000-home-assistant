@@ -1,0 +1,12 @@
+# Example configuration.yaml entry
+default_config:
+
+logger:
+  default: info
+  logs:
+    custom_components.ics_2000: debug
+
+light:
+  - platform: ics_2000
+    username: !secret ics_username
+    password: !secret ics_password
