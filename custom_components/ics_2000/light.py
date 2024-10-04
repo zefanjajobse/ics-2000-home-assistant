@@ -19,11 +19,14 @@ from homeassistant.components.light import (
     ColorMode,
     COLOR_MODE_BRIGHTNESS,
 )
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+from custom_components.ics_2000.const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -76,6 +79,24 @@ class Switch(SwitchEntity):
         self._state = self._switch.get_on_status()
 
     @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._switch.device_data.id)},
+            name=self.name,
+            model=self._switch.device_config.model_name,
+            model_id=str(self._switch.device_data.device),
+            sw_version=str(
+                self._switch.device_data.data.get("module", {}).get("version", "")
+            ),
+        )
+
+    @property
+    def icon(self) -> str | None:
+        """Icon of the entity."""
+        return "mdi:flash"
+
+    @property
     def name(self) -> str:
         """Return the display name of this switch."""
         return self._name
@@ -115,6 +136,24 @@ class DimmableLight(LightEntity):
         self._state = self._light.get_on_status()
         self._brightness = self._light.get_dim_level()
         self._attr_color_mode = ColorMode.BRIGHTNESS
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._light.device_data.id)},
+            name=self.name,
+            model=self._light.device_config.model_name,
+            model_id=str(self._light.device_data.device),
+            sw_version=str(
+                self._light.device_data.data.get("module", {}).get("version", "")
+            ),
+        )
+
+    @property
+    def icon(self) -> str | None:
+        """Icon of the entity."""
+        return "mdi:lightbulb"
 
     @property
     def name(self) -> str:
