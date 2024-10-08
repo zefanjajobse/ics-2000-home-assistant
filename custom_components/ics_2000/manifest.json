@@ -6,7 +6,7 @@
   "documentation": "https://github.com/zefanjajobse/ics-2000-home-assistant",
   "iot_class": "local_polling",
   "requirements": [
-    "ics-2000-python==0.1.0"
+    "ics-2000-python==0.1.1"
   ],
   "version": "0.1.0"
 }

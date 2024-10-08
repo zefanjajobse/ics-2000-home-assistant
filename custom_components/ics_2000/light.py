@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from ics_2000.hub import Hub
 from ics_2000.entities import (
@@ -21,7 +22,7 @@ from homeassistant.components.light import (
 )
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.components.switch import SwitchEntity
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_IP_ADDRESS
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -33,8 +34,9 @@ _LOGGER = logging.getLogger(__name__)
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
-        vol.Optional(CONF_USERNAME): cv.string,
-        vol.Optional(CONF_PASSWORD): cv.string,
+        vol.Required(CONF_USERNAME): cv.string,
+        vol.Required(CONF_PASSWORD): cv.string,
+        vol.Optional(CONF_IP_ADDRESS): cv.string,
     }
 )
 
@@ -48,11 +50,13 @@ def setup_platform(
     """Set up the Awesome Light platform."""
     # Assign configuration variables.
     # The configuration check takes care they are present.
-    username = config.get(CONF_USERNAME)
-    password = config.get(CONF_PASSWORD)
+    username: str = config[CONF_USERNAME]
+    password: str = config[CONF_PASSWORD]
+    local_address: str | None = config.get(CONF_IP_ADDRESS)
 
     # Setup connection with devices/cloud
     hub = Hub(username, password)
+    hub.local_address = local_address
     hub.login()
     hub.get_devices()
 
@@ -112,11 +116,11 @@ class Switch(SwitchEntity):
         You can skip the brightness part if your switch does not support
         brightness control.
         """
-        self._switch.turn_on(False)
+        self._switch.turn_on(self._switch._hub.local_address is not None)
 
     def turn_off(self, **kwargs: Any) -> None:
         """Instruct the switch to turn off."""
-        self._switch.turn_off(False)
+        self._switch.turn_off(self._switch._hub.local_address is not None)
 
     def update(self) -> None:
         """Fetch new state data for this switch.
@@ -191,11 +195,11 @@ class DimmableLight(LightEntity):
         brightness control.
         """
         self._light.dim(kwargs.get(ATTR_BRIGHTNESS, 255), False)
-        self._light.turn_on(False)
+        self._light.turn_on(self._light._hub.local_address is not None)
 
     def turn_off(self, **kwargs: Any) -> None:
         """Instruct the light to turn off."""
-        self._light.turn_off(False)
+        self._light.turn_off(self._light._hub.local_address is not None)
 
     def update(self) -> None:
         """Fetch new state data for this light.
