@@ -1,5 +1,5 @@
 # Home Assistant KlikAanKlikUit ICS-2000 support
-This adds the dimmable lights and switches from the ICS-2000 from KlikAanKlikUit to home assistant.
+This custom component adds the dimmable lights and switches from the ICS-2000 from KlikAanKlikUit to Home Assistant. It uses [this](https://github.com/zefanjajobse/ics_2000_python) python package, to connect with the ICS-2000.
 
 # Installation
 1. Add the ics_2000 folder within custom_components to your own home assistant installation, in your own custom_components folder.
