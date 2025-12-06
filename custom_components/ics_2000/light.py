@@ -17,9 +17,8 @@ from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     PLATFORM_SCHEMA,
     LightEntity,
-    ColorMode,
-    COLOR_MODE_BRIGHTNESS,
 )
+from homeassistant.components.light.const import ColorMode
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, CONF_IP_ADDRESS
@@ -167,12 +166,12 @@ class DimmableLight(LightEntity):
     @property
     def color_mode(self):
         """Set color mode for this entity."""
-        return COLOR_MODE_BRIGHTNESS
+        return ColorMode.BRIGHTNESS
 
     @property
     def supported_color_modes(self):
         """Flag supported color_modes (in an array format)."""
-        return [COLOR_MODE_BRIGHTNESS]
+        return [ColorMode.BRIGHTNESS]
 
     @property
     def brightness(self):
