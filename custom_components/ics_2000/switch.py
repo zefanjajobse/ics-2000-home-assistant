@@ -1,3 +1,4 @@
+
 """Platform for ICS-2000 integration."""
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
 from custom_components.ics_2000 import shared
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,4 +38,4 @@ def setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     shared.setup_platform(hass, config, add_entities,
-                          discovery_info, shared.Type.Light)
+                          discovery_info, shared.Type.Switch)
