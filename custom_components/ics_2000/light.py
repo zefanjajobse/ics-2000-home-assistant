@@ -7,7 +7,8 @@ from typing import Any
 
 from ics_2000.entities import dim_device
 
-from homeassistant.components.light import ATTR_BRIGHTNESS, ColorMode, LightEntity
+from homeassistant.components.light.const import ColorMode
+from homeassistant.components.light import ATTR_BRIGHTNESS, LightEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -28,7 +29,7 @@ async def async_setup_entry(
         [
             DimmableLight(entity, entry.runtime_data.local_address)
             for entity in entry.runtime_data.devices
-            if type(entity) is dim_device.DimDevice
+            if isinstance(entity, dim_device.DimDevice)
         ]
     )
 
@@ -43,10 +44,11 @@ class DimmableLight(LightEntity):
         """Initialize an dimmable light."""
         self._light = light
         self._name = str(light.name)
-        self._state = False  # self._light.get_on_status()
-        self._brightness = 255  # self._light.get_dim_level()
+        self._state = False
+        self._brightness = 255
         self._attr_color_mode = ColorMode.BRIGHTNESS
         self._local_address = local_address
+        self._attr_unique_id = light.device_data.id
 
     @property
     def device_info(self) -> DeviceInfo:
