@@ -2,14 +2,9 @@
 
 from datetime import timedelta
 import logging
-from typing import Any
 
-from ics_2000.hub import Hub
-
-from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-
-from . import HubConfigEntry
+from ics_2000.hub import Hub
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,9 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 class ICS200Coordinator(DataUpdateCoordinator):
     """Coordinator for updating data to and from klikaanklikuit."""
 
-    def __init__(
-        self, hass: HomeAssistant, config_entry: HubConfigEntry, hub: Hub
-    ) -> None:
+    def __init__(self, hass, config_entry, hub) -> None:
         """Initialize the klikaanklikuit coordinator."""
         super().__init__(
             hass,
