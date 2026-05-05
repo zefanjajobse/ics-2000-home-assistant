@@ -62,6 +62,7 @@ class WindowBlind(CoordinatorEntity[ICS200Coordinator], CoverEntity):
         self._blind = blind
 
         self._attr_unique_id = str(blind.entity_id)
+        self._attr_is_closed = None
 
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, blind.device_data.id)},

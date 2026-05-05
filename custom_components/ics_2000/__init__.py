@@ -13,7 +13,7 @@ from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryError
 from .const import CONF_HOME_ID, DOMAIN
 from .coordinator import ICS200Coordinator
 
-_PLATFORMS: list[Platform] = [Platform.LIGHT, Platform.SWITCH]
+_PLATFORMS: list[Platform] = [Platform.LIGHT, Platform.SWITCH, Platform.COVER]
 
 type HubConfigEntry = ConfigEntry[ICS200Coordinator]
 
