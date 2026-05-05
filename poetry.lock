@@ -2110,14 +2110,14 @@ typing = ["types-PyYAML", "types-simplejson", "types-toml", "types-tqdm", "types
 
 [[package]]
 name = "ics-2000-python"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ics_2000_python-0.1.3-py3-none-any.whl", hash = "sha256:52e5228ef42375003aab16c690c7d3fb6718838491840d2eaac79c140700a0e9"},
-    {file = "ics_2000_python-0.1.3.tar.gz", hash = "sha256:2d99370f9698b54a3f3984cb79cdfdfc6e688b5da25a2969df7e0fb04f151eff"},
+    {file = "ics_2000_python-0.1.4-py3-none-any.whl", hash = "sha256:0d35b826a957bea35c2c11711a8d0baf3030757f017e1d874361ea2120db6e64"},
+    {file = "ics_2000_python-0.1.4.tar.gz", hash = "sha256:bb9c872bde90535a71b82b7a17e74936471eb111efc8bfb897d0c01f90571235"},
 ]
 
 [package.dependencies]
