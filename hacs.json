@@ -1,5 +1,6 @@
 {
   "name": "KlikAanKlikUit ICS-2000",
   "homeassistant": "2025.12.0",
+  "render_readme": true,
   "hacs": "2.0.5"
 }
