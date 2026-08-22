@@ -1,0 +1,12 @@
+{
+  "domain": "ics_2000",
+  "name": "KlikAanKlikUit ICS-2000",
+  "codeowners": ["@zefanjajobse"],
+  "config_flow": true,
+  "documentation": "https://github.com/zefanjajobse/ics-2000-home-assistant/blob/main/Readme.md",
+  "issue_tracker": "https://github.com/zefanjajobse/ics-2000-home-assistant/issues",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "quality_scale": "bronze",
+  "requirements": ["ics-2000-python==0.1.4"]
+}
