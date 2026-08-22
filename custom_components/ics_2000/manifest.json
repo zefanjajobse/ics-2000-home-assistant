@@ -6,6 +6,7 @@
   ],
   "config_flow": true,
   "documentation": "https://github.com/zefanjajobse/ics-2000-home-assistant",
+  "issue_tracker": "https://github.com/zefanjajobse/ics-2000-home-assistant/issues",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "requirements": [
