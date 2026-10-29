@@ -48,7 +48,7 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
         super().__init__(coordinator, context=str(light.entity_id))
         self._light = light
         self._state: bool | None = None
-        self._brightness = None
+        self._brightness = light.device_config.max_brightness
         self._attr_color_mode = ColorMode.BRIGHTNESS
         self._local_address = local_address
         self._attr_unique_id = str(light.entity_id)
@@ -103,10 +103,10 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
                 self._light.dim, dim_level, False
             )
             return
-
-        await self.hass.async_add_executor_job(
-            self._light.turn_on, self._local_address is not None
-        )
+        else:
+            await self.hass.async_add_executor_job(
+                self._light.turn_on, self._local_address is not None
+            )
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Instruct the light to turn off."""
@@ -117,7 +117,8 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        status = self.coordinator.hub.device_statuses.get(self._light.entity_id)
+        status = self.coordinator.hub.device_statuses.get(
+            self._light.entity_id)
         self._state = None
         self._brightness = None
         if isinstance(status, (list, tuple)):
