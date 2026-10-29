@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/devcontainers-extra/features/pylint:2": {
+      "version": "2.0.18",
+      "resolved": "ghcr.io/devcontainers-extra/features/pylint@sha256:c5aa6c40c6f98d86b8faa06900755243d31fb5bb173fd24ba2b07c2139b361c4",
+      "integrity": "sha256:c5aa6c40c6f98d86b8faa06900755243d31fb5bb173fd24ba2b07c2139b361c4"
+    }
+  }
+}

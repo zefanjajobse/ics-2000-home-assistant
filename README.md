@@ -17,3 +17,14 @@ The easiest way to install **KlikAanKlikUit ICS-2000** is via **[HACS (Home Assi
 2. KlikAanKlikUit is available within the list of integrations within home assistant:
 <img width="511" height="224" alt="image" src="https://github.com/user-attachments/assets/fb5ec100-44f8-45dd-9a2f-c902e0b1e3a4" />
 
+# Contribute
+
+### Dev-container
+To develop it without needing to mess with your home assistant environment, you can run it within a dev-container.
+Within the devcontainer, type:
+
+```bash
+hass -c config
+```
+
+To start the home assistant environment.
