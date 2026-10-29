@@ -47,7 +47,7 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
         """Initialize an dimmable light."""
         super().__init__(coordinator, context=str(light.entity_id))
         self._light = light
-        self._state = False
+        self._state: bool | None = None
         self._brightness = None
         self._attr_color_mode = ColorMode.BRIGHTNESS
         self._local_address = local_address
@@ -86,11 +86,24 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
         """Return true if light is on."""
         return self._state
 
+    @property
+    def _max_brightness(self) -> int:
+        """Return the device-specific maximum brightness."""
+        return self._light.device_config.max_brightness or 255
+
     async def async_turn_on(self, **kwargs: Any) -> None:
-        """Instruct the light to turn on."""
-        await self.hass.async_add_executor_job(
-            self._light.dim, kwargs.get(ATTR_BRIGHTNESS, 255), False
-        )
+        """Turn on without dimming, or dim an already-on light."""
+        brightness = kwargs.get(ATTR_BRIGHTNESS)
+        if brightness is not None:
+            if self._state is not True:
+                return
+            brightness = max(0, min(255, int(brightness)))
+            dim_level = round(brightness * self._max_brightness / 255)
+            await self.hass.async_add_executor_job(
+                self._light.dim, dim_level, False
+            )
+            return
+
         await self.hass.async_add_executor_job(
             self._light.turn_on, self._local_address is not None
         )
@@ -104,10 +117,27 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        status = self.coordinator.hub.device_statuses.get(
-            self._light.entity_id, [])
-        if self._light.device_config.on_off_function is not None:
-            self._state = status[self._light.device_config.on_off_function] == 1
-        if self._light.device_config.dim_function is not None:
-            self._brightness = status[self._light.device_config.dim_function]
+        status = self.coordinator.hub.device_statuses.get(self._light.entity_id)
+        self._state = None
+        self._brightness = None
+        if isinstance(status, (list, tuple)):
+            on_off_index = self._light.device_config.on_off_function
+            dim_index = self._light.device_config.dim_function
+            if (
+                on_off_index is not None
+                and 0 <= on_off_index < len(status)
+                and status[on_off_index] is not None
+            ):
+                self._state = status[on_off_index] == 1
+            if (
+                dim_index is not None
+                and 0 <= dim_index < len(status)
+                and isinstance(status[dim_index], (int, float))
+            ):
+                raw_brightness = max(
+                    0, min(self._max_brightness, status[dim_index])
+                )
+                self._brightness = round(
+                    raw_brightness * 255 / self._max_brightness
+                )
         self.async_write_ha_state()
