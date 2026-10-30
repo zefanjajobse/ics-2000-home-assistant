@@ -2110,14 +2110,14 @@ typing = ["types-PyYAML", "types-simplejson", "types-toml", "types-tqdm", "types
 
 [[package]]
 name = "ics-2000-python"
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ics_2000_python-0.1.4-py3-none-any.whl", hash = "sha256:0d35b826a957bea35c2c11711a8d0baf3030757f017e1d874361ea2120db6e64"},
-    {file = "ics_2000_python-0.1.4.tar.gz", hash = "sha256:bb9c872bde90535a71b82b7a17e74936471eb111efc8bfb897d0c01f90571235"},
+    {file = "ics_2000_python-0.1.5-py3-none-any.whl", hash = "sha256:aefc87153b531d1993da1b7ffbc99c1a6ff8877249f4ca9b889f600704412e3a"},
+    {file = "ics_2000_python-0.1.5.tar.gz", hash = "sha256:cf18f92b1ad615b66c737edad7e069b31b2601588cca37d86d64edfa93dd3b04"},
 ]
 
 [package.dependencies]
@@ -5332,4 +5332,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13.2,<3.14"
-content-hash = "e7874067dbe60719a9756b6bebb7a008e72467628119d5bd503a5ebf41affd29"
+content-hash = "99dfd42a298f7363613616897067f4c534d71323fee2ab98824f8262905ae4a7"

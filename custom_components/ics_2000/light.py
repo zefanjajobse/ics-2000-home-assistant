@@ -5,18 +5,17 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from .coordinator import ICS200Coordinator
-from ics_2000.entities import dim_device
-
 from homeassistant.components.light import ATTR_BRIGHTNESS, ColorMode, LightEntity
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.core import callback
+
+from ics_2000.entities import dim_device
 
 from . import HubConfigEntry
 from .const import DOMAIN
+from .coordinator import ICS200Coordinator
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,8 +28,9 @@ async def async_setup_entry(
     """Setup the lights."""
     async_add_entities(
         [
-            DimmableLight(entry.runtime_data, entity,
-                          entry.runtime_data.hub.local_address)
+            DimmableLight(
+                entry.runtime_data, entity, entry.runtime_data.hub.local_address
+            )
             for entity in entry.runtime_data.hub.devices
             if type(entity) is dim_device.DimDevice
         ]
@@ -43,7 +43,12 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
     _attr_has_entity_name = True
     _attr_name = None
 
-    def __init__(self, coordinator: ICS200Coordinator, light: dim_device.DimDevice, local_address: str | None) -> None:
+    def __init__(
+        self,
+        coordinator: ICS200Coordinator,
+        light: dim_device.DimDevice,
+        local_address: str | None,
+    ) -> None:
         """Initialize an dimmable light."""
         super().__init__(coordinator, context=str(light.entity_id))
         self._light = light
@@ -57,8 +62,7 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
             name=str(light.name),
             model=light.device_config.model_name,
             model_id=str(light.device_data.device),
-            sw_version=str(light.device_data.data.get(
-                "module", {}).get("version", "")),
+            sw_version=str(light.device_data.data.get("module", {}).get("version", "")),
         )
 
     @property
@@ -99,9 +103,7 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
                 return
             brightness = max(0, min(255, int(brightness)))
             dim_level = round(brightness * self._max_brightness / 255)
-            await self.hass.async_add_executor_job(
-                self._light.dim, dim_level, False
-            )
+            await self.hass.async_add_executor_job(self._light.dim, dim_level, False)
             return
         else:
             await self.hass.async_add_executor_job(
@@ -117,8 +119,7 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        status = self.coordinator.hub.device_statuses.get(
-            self._light.entity_id)
+        status = self.coordinator.hub.device_statuses.get(self._light.entity_id)
         self._state = None
         self._brightness = None
         if isinstance(status, (list, tuple)):
@@ -135,10 +136,6 @@ class DimmableLight(CoordinatorEntity[ICS200Coordinator], LightEntity):
                 and 0 <= dim_index < len(status)
                 and isinstance(status[dim_index], (int, float))
             ):
-                raw_brightness = max(
-                    0, min(self._max_brightness, status[dim_index])
-                )
-                self._brightness = round(
-                    raw_brightness * 255 / self._max_brightness
-                )
+                raw_brightness = max(0, min(self._max_brightness, status[dim_index]))
+                self._brightness = round(raw_brightness * 255 / self._max_brightness)
         self.async_write_ha_state()

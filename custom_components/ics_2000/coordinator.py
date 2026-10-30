@@ -1,9 +1,10 @@
 """Example integration using DataUpdateCoordinator."""
 
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
 from ics_2000.hub import Hub
 
 _LOGGER = logging.getLogger(__name__)

@@ -4,9 +4,6 @@ from __future__ import annotations
 
 import logging
 
-from .coordinator import ICS200Coordinator
-from ics_2000.entities import blind_device
-
 from homeassistant.components.cover import (
     CoverEntity,
     CoverEntityFeature,
@@ -16,8 +13,11 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from ics_2000.entities import blind_device
+
 from . import HubConfigEntry
 from .const import DOMAIN
+from .coordinator import ICS200Coordinator
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,9 +46,7 @@ class WindowBlind(CoordinatorEntity[ICS200Coordinator], CoverEntity):
     _attr_assumed_state = True
 
     _attr_supported_features = (
-        CoverEntityFeature.OPEN
-        | CoverEntityFeature.CLOSE
-        | CoverEntityFeature.STOP
+        CoverEntityFeature.OPEN | CoverEntityFeature.CLOSE | CoverEntityFeature.STOP
     )
 
     def __init__(
@@ -69,9 +67,7 @@ class WindowBlind(CoordinatorEntity[ICS200Coordinator], CoverEntity):
             name=str(blind.name),
             model=blind.device_config.model_name,
             model_id=str(blind.device_data.device),
-            sw_version=str(
-                blind.device_data.data.get("module", {}).get("version", "")
-            ),
+            sw_version=str(blind.device_data.data.get("module", {}).get("version", "")),
         )
 
     @property
