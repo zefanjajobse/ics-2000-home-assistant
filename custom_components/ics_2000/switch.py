@@ -31,8 +31,7 @@ async def async_setup_entry(
 
     async_add_entities(
         [
-            Switch(entry.runtime_data, entity,
-                   entry.runtime_data.hub.local_address)
+            Switch(entry.runtime_data, entity, entry.runtime_data.hub.local_address)
             for entity in entry.runtime_data.hub.devices
             if type(entity) is switch_device.SwitchDevice
         ]
@@ -46,7 +45,10 @@ class Switch(CoordinatorEntity[ICS200Coordinator], SwitchEntity):
     _attr_name = None
 
     def __init__(
-        self, coordinator: ICS200Coordinator, switch: switch_device.SwitchDevice, local_address: str | None
+        self,
+        coordinator: ICS200Coordinator,
+        switch: switch_device.SwitchDevice,
+        local_address: str | None,
     ) -> None:
         """Initialize an switch."""
         super().__init__(coordinator, context=str(switch.entity_id))
@@ -89,8 +91,7 @@ class Switch(CoordinatorEntity[ICS200Coordinator], SwitchEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        status = self.coordinator.hub.device_statuses.get(
-            self._switch.entity_id, [])
-        if self._switch.device_config.on_off_function is not None:
+        status = self.coordinator.hub.device_statuses.get(self._switch.entity_id, [])
+        if self._switch.device_config.on_off_function is not None and len(status) > 0:
             self._state = status[self._switch.device_config.on_off_function] == 1
         self.async_write_ha_state()
