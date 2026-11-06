@@ -20,7 +20,7 @@ class ICS200Coordinator(DataUpdateCoordinator):
             _LOGGER,
             name="KlikAanKlikUit",
             config_entry=config_entry,
-            update_interval=timedelta(seconds=2),
+            update_interval=timedelta(seconds=5),
             always_update=True,
         )
         self.hub: Hub = hub
